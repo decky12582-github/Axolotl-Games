@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <style>
+            .waflashCanvas {
+                padding-right: 0;
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
+                border: 0px none;
+                background-color: black;
+                width: 100%;
+                height: 100%;
+                min-height: 600px;
+                max-width: 960px;
+                max-height: 600px;
+            }
+            #waflashContainer {
+                position: relative;
+            }
+            #waflashStatus {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 500px;
+                color: white;
+                margin: 0px auto;
+                padding: 20px;
+                font-size: 1.2rem;
+                text-align: center;
+                background-color: rgba(0, 0, 0, 0.5);
+                display: none;
+            }
+        </style>
+        <div id="waflashContainer" style="border: 0px solid #1e1f21">
+            <canvas
+                class="waflashCanvas"
+                id="canvas"
+                height="600"
+                tabindex="1"
+                width="960"
+                style="cursor: default; --waf-content-width: 640px; --waf-content-height: 480px"
+                waf-content-width="640"
+                waf-content-height="480"
+                waf-content-fps="45"
+            ></canvas>
+            <div id="waflashStatus" style="display: none">Playing..</div>
+            <script>
+                var ua = navigator.userAgent.toLowerCase();
+                if ((navigator.appName == 'Netscape' && ua.indexOf('trident') != -1) || ua.indexOf('msie') != -1) {
+                    var waf = document.getElementById('waflashStatus');
+                    waf.style.display = 'block';
+                    waf.innerText = '인터넷 익스플로러(IE) 에서는 게임이 실행되지 않습니다 !\n크롬, 엣지등의 다른 브라우저를 이용해주세요.';
+                    gtag('event', 'connect_from_ie', {
+                        event_category: 'error',
+                        event_label: ua,
+                    });
+                }
+            </script>
+            <script type="module" crossorigin="anonymous">
+                let is_mobile = /Mobi/i.test(window.navigator.userAgent);
+                if (is_mobile) {
+                    function scrollToSubject() {
+                        try {
+                            window.scrollTo({
+                                top: 100,
+                                left: 0,
+                                behavior: 'smooth',
+                            });
+                        } catch (e) {}
+                    }
+                    scrollToSubject();
+                    window.addEventListener('orientationchange', function () {
+                        setTimeout(scrollToSubject, 100);
+                    });
+                } else {
+                    document.getElementById('canvas').focus();
+                }
+                document.onkeydown = null; // disable shortcut
+                document.getElementById('canvas').addEventListener('keydown', function (ev) {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                });
+                document.addEventListener(
+                    'mousedown',
+                    (function () {
+                        const canvasElement = document.getElementById('canvas');
+                        let focused = false;
+                        return function (ev) {
+                            if (ev.target == canvasElement) {
+                                if (!focused) {
+                                    canvasElement.focus();
+                                    focused = true;
+                                }
+                            } else {
+                                if (focused) {
+                                    focused = false;
+                                }
+                            }
+                            return true;
+                        };
+                    })()
+                );
+
+                function processFileblock() {
+                    try {
+                        const o = (window.wafOptions = window.wafOptions || {});
+                        // const o = window.wafOptionsV2 = Object.assign({}, window.wafOptions);
+                        if (true || o.enableAutoResourceMap) {
+                            o.resourceMap = Array.isArray(o.resourceMap) ? o.resourceMap : Object.entries(o.resourceMap || {});
+                            o.resourceMap = o.resourceMap.concat(Array.isArray(window.wafResourceMap) ? window.wafResourceMap : Object.entries(window.wafResourceMap || {}));
+                            const ar = document.querySelectorAll('figure.fileblock > a[href]');
+                            const re = /^https:\/\/blog\.kakaocdn\.net\/dn\/(\w+)\/(\w+)\/(\w+)\/(.+)\?attach=1&knm=.+$/;
+                            let i = ar.length == 1 ? 1 : 0;
+                            for (; i < ar.length; i++) {
+                                const a = ar[i];
+                                const r = re.exec(a.href);
+                                if (r) {
+                                    // v1
+                                    o.resourceMap.push([`~^.*/${decodeURI(r[4])}(\\?.*)?$`, a.href]);
+                                } else {
+                                    // v2
+                                    const filename = a.querySelector('div.desc div.filename span.name');
+                                    filename && filename.innerText && o.resourceMap.push([`~^.*/${decodeURI(filename.innerText)}(\\?.*)?$`, a.href]);
+                                }
+                            }
+                        }
+                    } catch (e) {}
+                }
+                // 2021.12.08 changed
+                function processFileblock_v2() {
+                    try {
+                        const o = (window.wafOptions = window.wafOptions || {});
+                        // const o = window.wafOptionsV2 = Object.assign({}, window.wafOptions);
+                        if (true || o.enableAutoResourceMap) {
+                            o.resourceMap = Array.isArray(o.resourceMap) ? o.resourceMap : Object.entries(o.resourceMap || {});
+                            o.resourceMap = o.resourceMap.concat(Array.isArray(window.wafResourceMap) ? window.wafResourceMap : Object.entries(window.wafResourceMap || {}));
+                            const ar = document.querySelectorAll('figure.fileblock > a[href]');
+                            let i = ar.length == 1 ? 1 : 0;
+                            for (; i < ar.length; i++) {
+                                const a = ar[i];
+                                const filename = a.querySelector('div.desc div.filename span.name');
+                                filename && filename.innerText && o.resourceMap.push([`~^.*/${decodeURI(filename.innerText)}(\\?.*)?$`, a.href]);
+                            }
+                        }
+                    } catch (e) {}
+                }
+                processFileblock();
+                // resize
+                const defaultSetScreenSizeHandler = function (w, h) {
+                    let desiredWidth = parseInt(w) || 0;
+                    let desiredHeight = parseInt(h) || 0;
+                    if (desiredWidth <= 0 || desiredHeight <= 0) {
+                        console.warn('invalid width/height!');
+                        return;
+                    }
+                    const c = document.getElementById('canvas');
+                    if (screen.width > desiredWidth * 1.1) {
+                        c.style.width = desiredWidth + 'px';
+                        c.style.minWidth = c.style.maxWidth = c.style.width;
+                    }
+                    if (screen.height > desiredHeight * 1.25) {
+                        c.style.height = desiredHeight + 'px';
+                        c.style.minHeight = c.style.maxHeight = c.style.height;
+                    }
+                };
+                const defaultSetScreenSizeHandler_max = function (w, h) {
+                    let desiredWidth = parseInt(w) || 0;
+                    let desiredHeight = parseInt(h) || 0;
+                    if (desiredWidth < 0 || desiredHeight < 0) {
+                        console.warn('invalid width/height!');
+                        return;
+                    }
+                    const c = document.getElementById('canvas');
+                    if (desiredWidth > 0 && screen.width > desiredWidth * 1.1) {
+                        c.style.width = '100%';
+                        c.style.maxWidth = desiredWidth + 'px';
+                    }
+                    if (desiredHeight > 0 && screen.height > desiredHeight * 1.25) {
+                        c.style.height = '100%';
+                        c.style.maxHeight = desiredHeight + 'px';
+                        c.style.minHeight = c.style.maxHeight;
+                    }
+                };
+                if (true) {
+                    let size = window.wafOptions.size;
+                    if (size) {
+                        if (typeof size == 'function') size();
+                        else if (size.maxWidth || size.maxHeight) defaultSetScreenSizeHandler_max(size.maxWidth, size.maxHeight);
+                        else defaultSetScreenSizeHandler(size.width, size.height);
+                    }
+                }
+                if (false) {
+                    const o = (window.wafOptions = window.wafOptions || {});
+                    o.backgroundColor = o.backgroundColor || 0xff000000; //0xff1e1f21;
+                }
+                {
+                    const o = (window.wafOptions = window.wafOptions || {});
+                    const c = document.getElementById('canvas');
+                    o.disableContextMenu &&
+                        c &&
+                        c.addEventListener('contextmenu', e => {
+                            e.preventDefault();
+                        });
+                }
+                import { createWaflash } from 'https://tistory3.daumcdn.net/tistory/4102429/skin/images/waflash-player.min.js?2022082001';
+                createWaflash(document.querySelectorAll('figure.fileblock a')[0].href, window.wafOptions || {});
+            </script>
+        </div>
+    </body>
+</html>
