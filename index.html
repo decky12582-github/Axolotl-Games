@@ -1,30 +1,30 @@
-<!doctype html>
-<html lang="en">
-<html>
-<head>
-<title>Waflash Rewritten</title>
-<link rel="stylesheet" href="style.css">
-<script>	
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Waflash Rewritten&lt;/title&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;style.css&quot;&gt;
+&lt;script&gt;	
 		var gameConfig = {
-			swfUrl: "https://l3m0n-cao.github.io/papa-sushiria/papassushiria.swf"
+			swfUrl: &quot;https://l3m0n-cao.github.io/papa-sushiria/papassushiria.swf&quot;
 		}
-</script>
-</head>
-<body>
-	<a target="_blank" href="https://github.com/Waflash-Rewritten" title="Waflash-Rewritten" id="watermark" style="box-shadow:none;width:100px; height:13px;display:block;z-index: 9999999;position:absolute;right:3px;top:5px">Github</a>
-<div id="waflashContainer">
-<canvas class="waflashCanvas" id="canvas" tabindex="1"></canvas>
-<div id="waflashStatus" style="display: none;">Playing...</div>
-<script>
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;a target=&quot;_blank&quot; href=&quot;https://github.com/Waflash-Rewritten&quot; title=&quot;Waflash-Rewritten&quot; id=&quot;watermark&quot; style=&quot;box-shadow:none;width:100px; height:13px;display:block;z-index: 9999999;position:absolute;right:3px;top:5px&quot;&gt;Github&lt;/a&gt;
+&lt;div id=&quot;waflashContainer&quot;&gt;
+&lt;canvas class=&quot;waflashCanvas&quot; id=&quot;canvas&quot; tabindex=&quot;1&quot;&gt;&lt;/canvas&gt;
+&lt;div id=&quot;waflashStatus&quot; style=&quot;display: none;&quot;&gt;Playing...&lt;/div&gt;
+&lt;script&gt;
 		var ua = navigator.userAgent.toLowerCase();
-		if ( (navigator.appName == 'Netscape' && ua.indexOf('trident') != -1) || (ua.indexOf("msie") != -1)) {
-    		var waf = document.getElementById('waflashStatus');
-			waf.style.display = 'block';
-			waf.innerText = 'Imagine using IE.';
-			gtag('event', 'connect_from_ie', {'event_category': 'error', 'event_label': ua });
+		if ( (navigator.appName == &#039;Netscape&#039; &amp;&amp; ua.indexOf(&#039;trident&#039;) != -1) || (ua.indexOf(&quot;msie&quot;) != -1)) {
+    		var waf = document.getElementById(&#039;waflashStatus&#039;);
+			waf.style.display = &#039;block&#039;;
+			waf.innerText = &#039;Imagine using IE.&#039;;
+			gtag(&#039;event&#039;, &#039;connect_from_ie&#039;, {&#039;event_category&#039;: &#039;error&#039;, &#039;event_label&#039;: ua });
 		}
-	</script>
-<script type="module" crossorigin="anonymous">
+	&lt;/script&gt;
+&lt;script type=&quot;module&quot; crossorigin=&quot;anonymous&quot;&gt;
 		let is_mobile = /Mobi/i.test(window.navigator.userAgent);
 		if (is_mobile) {
 			function scrollToSubject() {
@@ -32,26 +32,26 @@
 					window.scrollTo({
 						top: 100,
 						left: 0,
-						behavior: 'smooth'
+						behavior: &#039;smooth&#039;
 					});
 				} catch (e) {}
 			}
 			scrollToSubject();
-			window.addEventListener("orientationchange", function() {
+			window.addEventListener(&quot;orientationchange&quot;, function() {
 				setTimeout(scrollToSubject, 100);
 			});
 		} else {
-			document.getElementById('canvas').focus();
+			document.getElementById(&#039;canvas&#039;).focus();
 		}
-		document.getElementById('canvas').addEventListener("keydown", function(ev) {
+		document.getElementById(&#039;canvas&#039;).addEventListener(&quot;keydown&quot;, function(ev) {
 			ev.preventDefault();
 			ev.stopPropagation();
 		});
-		document.getElementById('canvas').addEventListener("click", function() {
-			document.getElementById('canvas').focus();
+		document.getElementById(&#039;canvas&#039;).addEventListener(&quot;click&quot;, function() {
+			document.getElementById(&#039;canvas&#039;).focus();
 		});
-		document.addEventListener("mousedown", (function() {
-			const canvasElement = document.getElementById('canvas');
+		document.addEventListener(&quot;mousedown&quot;, (function() {
+			const canvasElement = document.getElementById(&#039;canvas&#039;);
 			let focused = false;
 			return function(ev) {
 				if (ev.target == canvasElement) {
@@ -70,12 +70,12 @@
 		var golddate=Date;
 		Date = function(){
 			var a=new golddate();
-			a.setFullYear('2022'); a.setMonth('06'); a.setDate('01');
+			a.setFullYear(&#039;2022&#039;); a.setMonth(&#039;06&#039;); a.setDate(&#039;01&#039;);
 			return a;
 		};
 		Date.now=function(){
 			var a=new golddate();
-			a.setFullYear('2022'); a.setMonth('06'); a.setDate('01');
+			a.setFullYear(&#039;2022&#039;); a.setMonth(&#039;06&#039;); a.setDate(&#039;01&#039;);
 			return a.getTime();
 		}
 
@@ -83,9 +83,9 @@
 
 		import {
 			createWaflash
-		} from 'https://l3m0n-cao.github.io/wafr/js/wafrp.obf.js';
+		} from &#039;./js/wafrp.obf.js&#039;;
 		createWaflash(gameConfig.swfUrl, window.wafOptions || {});
-	</script>
-</div>
-</body>
-</html>
+	&lt;/script&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
