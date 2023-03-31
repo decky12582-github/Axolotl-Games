@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <style>
+      h1 {
+  --s: 0.1em;   /* the thickness of the line */
+  --c: #2c4bff; /* the color */
+  
+  color: #0000;
+  padding-bottom: var(--s);
+  background: 
+    linear-gradient(90deg,var(--c) 50%,#000 0) calc(100% - var(--_p,0%))/200% 100%,
+    linear-gradient(var(--c) 0 0) 0% 100%/var(--_p,0%) var(--s) no-repeat;
+  -webkit-background-clip: text,padding-box;
+          background-clip: text,padding-box;
+  transition: 0.5s;
+}
+h1:hover {--_p: 100%}
+
+
+body {
+  height: 100vh;
+  margin: 0;
+  display: grid;
+  place-content: center;
+}
+h1 {
+  font-family: system-ui, sans-serif;
+  font-size: 5rem;
+  cursor: pointer;
+}
+a:link, a:visited {
+  background-color: white;
+  color: black;
+  border: 2px solid green;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-family: monospace
+}
+
+a:hover, a:active {
+  background-color: green;
+  color: white;
+  font-family: monospace
+}
+ </style>
+ </head>
+ <body>
+   <h1>Welcome to My Unblocked Games!</h1>
+   <h1>Built by Decky12582</h1>
+<p style="font-family: monospace; font-size: 24px">
+Choose a Game Below!
+</p>
+<br><br><br>
+<a href="https://decky12582-github.github.io/flashandhtml5-games/html/3d-tanks.html" target="_blank">3D-Tanks</a>
+&nbsp;
